@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		BACC71B31E2987CB00BA3D35 /* SecuritySDK.h in Headers */ = {isa = PBXBuildFile; fileRef = BACC71B11E2987CB00BA3D35 /* SecuritySDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BACC71BC1E298CC000BA3D35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BACC71BB1E298CC000BA3D35 /* Security.framework */; };
+		BACC71BE1E298CD200BA3D35 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACC71BD1E298CD200BA3D35 /* KeychainManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BACC71AE1E2987CB00BA3D35 /* SecuritySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SecuritySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BACC71B11E2987CB00BA3D35 /* SecuritySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecuritySDK.h; sourceTree = "<group>"; };
 		BACC71B21E2987CB00BA3D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BACC71BB1E298CC000BA3D35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BACC71BD1E298CD200BA3D35 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,6 +25,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BACC71BC1E298CC000BA3D35 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,6 +37,7 @@
 			children = (
 				BACC71B01E2987CB00BA3D35 /* SecuritySDK */,
 				BACC71AF1E2987CB00BA3D35 /* Products */,
+				BACC71BA1E298CBF00BA3D35 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -47,9 +53,18 @@
 			isa = PBXGroup;
 			children = (
 				BACC71B11E2987CB00BA3D35 /* SecuritySDK.h */,
+				BACC71BD1E298CD200BA3D35 /* KeychainManager.swift */,
 				BACC71B21E2987CB00BA3D35 /* Info.plist */,
 			);
 			path = SecuritySDK;
+			sourceTree = "<group>";
+		};
+		BACC71BA1E298CBF00BA3D35 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BACC71BB1E298CC000BA3D35 /* Security.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,6 +89,7 @@
 				BACC71AA1E2987CA00BA3D35 /* Frameworks */,
 				BACC71AB1E2987CA00BA3D35 /* Headers */,
 				BACC71AC1E2987CA00BA3D35 /* Resources */,
+				BACC71B91E29885000BA3D35 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -96,6 +112,7 @@
 					BACC71AD1E2987CA00BA3D35 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = EZ679F3LK2;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -127,11 +144,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BACC71B91E29885000BA3D35 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nDEVICE_PATH=\"${OBJROOT}/UninstalledProducts/iphoneos/${TARGET_NAME}.framework\"\nSIMULATOR_PATH=\"${SYMROOT}/../../../../Products/Debug-iphonesimulator/${TARGET_NAME}.framework\"\nARCHIVE_PATH=\"${SRCROOT}/_Archive\"\nMODULE_PATH=\"Modules/${TARGET_NAME}.swiftmodule\"\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\nif [ -d \"${DEVICE_PATH}\" ]; then\nif [ -d \"${SIMULATOR_PATH}\" ]; then\nrm -rf \"${ARCHIVE_PATH}\"\nmkdir \"${ARCHIVE_PATH}\"\ncp -r \"${DEVICE_PATH}\" \"${ARCHIVE_PATH}\"\ncp -r \"${SIMULATOR_PATH}/${MODULE_PATH}/.\" \"${ARCHIVE_PATH}/${TARGET_NAME}.framework/${MODULE_PATH}\"\nlipo -create \"${DEVICE_PATH}/${TARGET_NAME}\" \"${SIMULATOR_PATH}/${TARGET_NAME}\" -output \"${ARCHIVE_PATH}/${TARGET_NAME}.framework/${TARGET_NAME}\"\nfi\nfi\nfi\nexit 0;";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BACC71A91E2987CA00BA3D35 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BACC71BE1E298CD200BA3D35 /* KeychainManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +175,7 @@
 		BACC71B41E2987CB00BA3D35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -194,7 +228,7 @@
 		BACC71B51E2987CB00BA3D35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -240,6 +274,8 @@
 		BACC71B71E2987CB00BA3D35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = EZ679F3LK2;
@@ -248,10 +284,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SecuritySDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jay.SecuritySDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -259,6 +297,8 @@
 		BACC71B81E2987CB00BA3D35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = EZ679F3LK2;
@@ -267,6 +307,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SecuritySDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jay.SecuritySDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -294,6 +335,7 @@
 				BACC71B81E2987CB00BA3D35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
